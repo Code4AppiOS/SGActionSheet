@@ -18,15 +18,36 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    SGActionSheet *sheet = [[SGActionSheet alloc] initWithTitle:@"这是一个很赞的自定义UIActionSheet" delegate:self cancelButtonTitle:@"取消" otherButtonTitleArray:@[@"相册", @"拍照", @"sorgle"]];
-    sheet.titleColor = [UIColor redColor];
-//    sheet.otherTitleColor = [UIColor brownColor];
+
+- (IBAction)default:(id)sender {
+    SGActionSheet *sheet = [[SGActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitleArray:@[@"相册", @"拍照"]];
     [sheet show];
+}
+
+- (IBAction)default_Message:(id)sender {
+    SGActionSheet *sheet = [SGActionSheet actionSheetWithTitle:@"这是一个很赞的自定义UIActionSheet" delegate:self cancelButtonTitle:@"取消" otherButtonTitleArray:@[@"相册", @"拍照"]];
+    [sheet show];
+}
+
+- (IBAction)default_Scroll:(id)sender {
+    SGActionSheet *sheet = [[SGActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitleArray:@[@"相册", @"拍照", @"照片", @"选取"]];
+    [sheet show];
+}
+
+- (IBAction)default_Message_Scroll:(id)sender {
+    SGActionSheet *sheet = [SGActionSheet actionSheetWithTitle:@"这是一个很赞的自定义UIActionSheet" delegate:self cancelButtonTitle:@"取消" otherButtonTitleArray:@[@"相册", @"拍照", @"照片", @"选取"]];
+    sheet.messageTextFont = [UIFont systemFontOfSize:20];
+    sheet.messageTextColor = [UIColor redColor];
+    sheet.otherTitleFont = [UIFont systemFontOfSize:20];
+    sheet.cancelButtonTitleFont = [UIFont systemFontOfSize:20];
+    [sheet show];
+}
+
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+
 }
 
 

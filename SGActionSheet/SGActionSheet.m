@@ -14,7 +14,7 @@
 #import "UIView+SGExtension.h"
 
 
-#define titleFond [UIFont systemFontOfSize:20]
+#define message_TextFond [UIFont systemFontOfSize:17]
 
 #define SG_screenWidth [UIScreen mainScreen].bounds.size.width
 #define SG_screenHeight [UIScreen mainScreen].bounds.size.height
@@ -22,24 +22,47 @@
 @interface SGActionSheet () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UIButton *coverView;
+/** 信息提示文字 */
+@property (nonatomic, copy) NSString *title;
+/** 取消按钮文字 */
+@property (nonatomic, copy) NSString *cancelButtonTitle;
+/** 其他标题文字数组 */
+@property (nonatomic, strong) NSArray *otherButtons;
+
 /** 底部弹出视图 */
 @property (nonatomic, strong) UIView *sheetView;
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) NSArray *otherButtons;
-@property (nonatomic, strong) UILabel *title_label;
 
+/** 提示Label */
+@property (nonatomic, strong) UILabel *message_label;
+/** 取消按钮 */
+@property (nonatomic, strong) UIButton *cancelButton;
 @end
 
 @implementation SGActionSheet
 
-static CGFloat const margin = 20;
-static CGFloat const margin_small = 15;
+/** Message与BGView之间的间距(X) */
+static CGFloat const margin_X = 20;
 
+/** Message与BGView之间的间距(Y) */
+static CGFloat const margin_Y = 15;
+
+/** 取消按钮到other按钮之间的间距 */
+static CGFloat const margin_cancelButton_to_otherButton = 5;
+
+/** 设置otherButtons的个数（多余这个数可以实现tableView的滚动 */
+static NSInteger const otherButton_count = 3;
+
+/** cell的高度 */
 static CGFloat const cell_rowHeight = 44;
+
+/** 底部View弹出的时间 */
 static CGFloat const SheetViewAnimationDuration = 0.25;
 
 - (instancetype)initWithTitle:(NSString *)title delegate:(id<SGActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitleArray:(NSArray *)otherButtonTitleArray {
     if (self = [super init]) {
+        
+        self.frame = [UIScreen mainScreen].bounds;
         self.backgroundColor = [UIColor clearColor];
         
         self.title = title;
@@ -49,7 +72,6 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
         self.otherButtons = otherButtonTitleArray;
         
         [self setupSubviews];
-        
     }
     return self;
 }
@@ -57,7 +79,6 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
 + (instancetype)actionSheetWithTitle:(NSString *)title delegate:(id<SGActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitleArray:(NSArray *)otherButtonTitleArray {
     return [[self alloc] initWithTitle:title delegate:delegate cancelButtonTitle:cancelButtonTitle otherButtonTitleArray:otherButtonTitleArray];
 }
-
 
 /**
  *  计算文字尺寸
@@ -71,9 +92,7 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
     return [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
 }
 
-
 - (void)setupSubviews {
-    self.frame = [UIScreen mainScreen].bounds;
     
     // 遮盖视图
     self.coverView = [[UIButton alloc] init];
@@ -83,94 +102,107 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
     [self addSubview:self.coverView];
     
     // 取消按钮的创建
-    UIButton *cancelButton = [[UIButton alloc] init];
-    [cancelButton setTitle:self.cancelButtonTitle forState:(UIControlStateNormal)];
-    [cancelButton setTitleColor:[UIColor blackColor] forState:(UIControlStateNormal)];
-    [cancelButton setBackgroundImage:[UIImage imageNamed:@"SGActionSheet.bundle/cell_bg_image"] forState:(UIControlStateNormal)];
-    [cancelButton setBackgroundImage:[UIImage imageNamed:@"SGActionSheet.bundle/cell_bg_image_high@2x"] forState:(UIControlStateHighlighted)];
-    [cancelButton addTarget:self action:@selector(dismiss) forControlEvents:(UIControlEventTouchUpInside)];
+    self.cancelButton = [[UIButton alloc] init];
+    [_cancelButton setTitle:self.cancelButtonTitle forState:(UIControlStateNormal)];
+    [_cancelButton setTitleColor:[UIColor blackColor] forState:(UIControlStateNormal)];
+    [_cancelButton setBackgroundImage:[UIImage imageNamed:@"SGActionSheet.bundle/cell_bg_image"] forState:(UIControlStateNormal)];
+    [_cancelButton setBackgroundImage:[UIImage imageNamed:@"SGActionSheet.bundle/cell_bg_image_high@2x"] forState:(UIControlStateHighlighted)];
+    [_cancelButton addTarget:self action:@selector(dismiss) forControlEvents:(UIControlEventTouchUpInside)];
     
     // 提示标题
-    self.title_label = [[UILabel alloc] init];
-    _title_label.textAlignment = NSTextAlignmentCenter;
-    _title_label.numberOfLines = 0;
-    _title_label.text = self.title;
-    
-    CGFloat labelW = SG_screenWidth - 2 * margin;
-    CGSize labelSize = [self sizeWithText:_title_label.text font:titleFond maxSize:CGSizeMake(labelW, MAXFLOAT)];
-    
-    if (_title_label.text) {
-        // 提示标题文字背景视图
-        UIView *bgView = [[UIView alloc] init];
-        CGFloat bgViewHeight = labelSize.height + margin_small * 2;
-        bgView.frame = CGRectMake(0, 0, SG_screenWidth, bgViewHeight);
-        bgView.backgroundColor = [UIColor whiteColor];
-        [bgView addSubview:_title_label];
-        _title_label.frame = CGRectMake(margin, margin_small, SG_screenWidth - 2 * margin, labelSize.height);
+    self.message_label = [[UILabel alloc] init];
+    _message_label.textAlignment = NSTextAlignmentCenter;
+    _message_label.numberOfLines = 0;
+    _message_label.text = self.title;
+    _message_label.font = message_TextFond;
 
-        // 创建tableView
-        CGFloat tableViewHeight;
-        if (_otherButtons.count <= 2) {
+    CGFloat message_label_W = SG_screenWidth - 2 * margin_X;
+    CGSize message_labelSize = [self sizeWithText:_message_label.text font:message_TextFond maxSize:CGSizeMake(message_label_W, MAXFLOAT)];
+    
+    if (_message_label.text) {
+        
+        // 设置Message的frame
+        _message_label.frame = CGRectMake(margin_X, margin_Y, SG_screenWidth - 2 * margin_X, message_labelSize.height);
+        
+        // 创建Message背景视图
+        CGFloat message_bgViewHeight = message_labelSize.height + margin_Y * 2;
+
+        UIView *bgView = [[UIView alloc] init];
+        bgView.frame = CGRectMake(0, 0, SG_screenWidth, message_bgViewHeight);
+        bgView.backgroundColor = [UIColor whiteColor];
+        [bgView addSubview:_message_label];
+        
+        // 创建分割线
+        UIImageView *splitters = [[UIImageView alloc] init];
+        splitters.image = [UIImage imageNamed:@"SGActionSheet.bundle/cell_splitters@2x"];
+        splitters.frame = CGRectMake(0, message_bgViewHeight - 1, SG_screenWidth, 1);
+        [bgView addSubview:splitters];
+
+        
+        CGFloat tableViewHeight; // tableView的高
+        if (_otherButtons.count <= otherButton_count) {
             tableViewHeight = cell_rowHeight * _otherButtons.count;
-        } else {
-            tableViewHeight = cell_rowHeight * 2;
+        } else { // _otherButtons.count 大于 otherButton_count
+            tableViewHeight = cell_rowHeight * otherButton_count;
         }
-        self.tableView = [[UITableView alloc] initWithFrame:(CGRectMake(0, bgViewHeight + 1, SG_screenWidth, tableViewHeight)) style:(UITableViewStylePlain)];
+        
+        // 创建tableView
+        self.tableView = [[UITableView alloc] initWithFrame:(CGRectMake(0, message_bgViewHeight, SG_screenWidth, tableViewHeight)) style:(UITableViewStylePlain)];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.rowHeight = cell_rowHeight;
         
-        
         // 创建底部弹出视图
+        CGFloat sheetView_Height = message_bgViewHeight + tableViewHeight + margin_cancelButton_to_otherButton + cell_rowHeight;
         self.sheetView = [[UIView alloc] init];
         
-        [self.sheetView addSubview:bgView];
-        [self.sheetView addSubview:_tableView];
-        [self.sheetView addSubview:cancelButton];
-        
-        CGFloat sheetViewHeight = bgViewHeight + tableViewHeight + 5 + cell_rowHeight;
-        if (_otherButtons.count <= 2) {
+        if (_otherButtons.count <= otherButton_count) {
             self.tableView.scrollEnabled = NO;
             _tableView.bounces = NO;
         }
-        
-        cancelButton.frame = CGRectMake(0,  sheetViewHeight - cell_rowHeight, SG_screenWidth, cell_rowHeight);
-        
-        self.sheetView.frame = CGRectMake(0, SG_screenHeight, [UIScreen mainScreen].bounds.size.width, sheetViewHeight);
 
+        _cancelButton.frame = CGRectMake(0, sheetView_Height - cell_rowHeight, SG_screenWidth, cell_rowHeight);
+        
+        self.sheetView.frame = CGRectMake(0, SG_screenHeight, SG_screenWidth, sheetView_Height);
+
+        [self.sheetView addSubview:bgView];
+        [self.sheetView addSubview:_tableView];
+        [self.sheetView addSubview:_cancelButton];
+        
     } else {
         
         // 创建tableView
         CGFloat tableViewHeight;
-        if (_otherButtons.count <= 2) {
+        if (_otherButtons.count <= otherButton_count) {
             tableViewHeight = cell_rowHeight * _otherButtons.count;
         } else {
-            tableViewHeight = cell_rowHeight * 2;
+            tableViewHeight = cell_rowHeight * otherButton_count;
         }
+        
         self.tableView = [[UITableView alloc] initWithFrame:(CGRectMake(0, 0, SG_screenWidth, tableViewHeight)) style:(UITableViewStylePlain)];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.rowHeight = cell_rowHeight;
-        
-        
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
         // 创建底部弹出视图
+        CGFloat sheetViewHeight = tableViewHeight + 5 + cell_rowHeight;
+
         self.sheetView = [[UIView alloc] init];
         
-        [self.sheetView addSubview:_tableView];
-        [self.sheetView addSubview:cancelButton];
-        
-        CGFloat sheetViewHeight = tableViewHeight + 5 + cell_rowHeight;
-        if (_otherButtons.count <= 2) {
+        if (_otherButtons.count <= otherButton_count) {
             self.tableView.scrollEnabled = NO;
             _tableView.bounces = NO;
         }
         
-        cancelButton.frame = CGRectMake(0,  sheetViewHeight - cell_rowHeight, SG_screenWidth, cell_rowHeight);
+        _cancelButton.frame = CGRectMake(0, sheetViewHeight - cell_rowHeight, SG_screenWidth, cell_rowHeight);
 
-        self.sheetView.frame = CGRectMake(0, SG_screenHeight, [UIScreen mainScreen].bounds.size.width, sheetViewHeight);
+        self.sheetView.frame = CGRectMake(0, SG_screenHeight, SG_screenWidth, sheetViewHeight);
+        
+        [self.sheetView addSubview:_tableView];
+        [self.sheetView addSubview:_cancelButton];
     }
-    
     [self.coverView addSubview:_sheetView];
 }
 
@@ -184,7 +216,6 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
     }];
 }
 
-
 /** 点击按钮以及遮盖部分执行的方法 */
 - (void)dismiss {
     [UIView animateWithDuration:SheetViewAnimationDuration animations:^{
@@ -195,7 +226,6 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
 }
 
 #pragma mark - - - TableView代理以及数据源方法
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.otherButtons.count;
 }
@@ -209,7 +239,8 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
     }
     
     cell.titleLabel.text = self.otherButtons[indexPath.row];
-    cell.titleLabel.textColor = _otherTitleColor;
+    cell.titleLabel.textColor = self.otherTitleColor;
+    cell.titleLabel.font = self.otherTitleFont;
     cell.splitters.hidden = indexPath.row == 0;
     
     cell.tag = indexPath.row + cell_Tag;
@@ -225,17 +256,95 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
 }
 
 
-
 #pragma mark - - - setter
 
-- (void)setTitleColor:(UIColor *)titleColor {
-    _titleColor = titleColor;
-    
-    self.title_label.textColor = titleColor;
+- (void)setMessageTextColor:(UIColor *)messageTextColor {
+    _messageTextColor = messageTextColor;
+    self.message_label.textColor = messageTextColor;
 }
 
-- (void)setOtherTitleColor:(UIColor *)otherTitleColor {
-    _otherTitleColor = otherTitleColor;
+- (void)setMessageTextFont:(UIFont *)messageTextFont {
+    _messageTextFont = messageTextFont;
+    self.message_label.font = messageTextFont;
+    [self.sheetView removeFromSuperview];
+    /** 抽出的部分代码 */
+    [self SG_messageTextFont:messageTextFont];
+    [self.coverView addSubview:_sheetView];
+}
+
+- (void)setCancelButtonTitleColor:(UIColor *)cancelButtonTitleColor {
+    _cancelButtonTitleColor = cancelButtonTitleColor;
+    [_cancelButton setTitleColor:cancelButtonTitleColor forState:(UIControlStateNormal)];
+}
+
+- (void)setCancelButtonTitleFont:(UIFont *)cancelButtonTitleFont {
+    _cancelButtonTitleFont = cancelButtonTitleFont;
+    self.cancelButton.titleLabel.font = cancelButtonTitleFont;
+}
+
+/** 抽出的部分代码 */
+- (void)SG_messageTextFont:(UIFont *)messageTextFont {
+    // 提示标题
+    self.message_label = [[UILabel alloc] init];
+    _message_label.textAlignment = NSTextAlignmentCenter;
+    _message_label.numberOfLines = 0;
+    _message_label.text = self.title;
+    _message_label.font = messageTextFont;
+    
+    CGFloat message_label_W = SG_screenWidth - 2 * margin_X;
+    CGSize message_labelSize = [self sizeWithText:_message_label.text font:messageTextFont maxSize:CGSizeMake(message_label_W, MAXFLOAT)];
+    
+    if (_message_label.text) {
+        
+        // 设置Message的frame
+        _message_label.frame = CGRectMake(margin_X, margin_Y, SG_screenWidth - 2 * margin_X, message_labelSize.height);
+        
+        // 创建Message背景视图
+        CGFloat message_bgViewHeight = message_labelSize.height + margin_Y * 2;
+        
+        UIView *bgView = [[UIView alloc] init];
+        bgView.frame = CGRectMake(0, 0, SG_screenWidth, message_bgViewHeight);
+        bgView.backgroundColor = [UIColor whiteColor];
+        [bgView addSubview:_message_label];
+        
+        // 创建分割线
+        UIImageView *splitters = [[UIImageView alloc] init];
+        splitters.image = [UIImage imageNamed:@"SGActionSheet.bundle/cell_splitters@2x"];
+        splitters.frame = CGRectMake(0, message_bgViewHeight - 1, SG_screenWidth, 1);
+        [bgView addSubview:splitters];
+        
+        
+        CGFloat tableViewHeight; // tableView的高
+        if (_otherButtons.count <= otherButton_count) {
+            tableViewHeight = cell_rowHeight * _otherButtons.count;
+        } else { // _otherButtons.count 大于 otherButton_count
+            tableViewHeight = cell_rowHeight * otherButton_count;
+        }
+        
+        // 创建tableView
+        self.tableView = [[UITableView alloc] initWithFrame:(CGRectMake(0, message_bgViewHeight, SG_screenWidth, tableViewHeight)) style:(UITableViewStylePlain)];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.rowHeight = cell_rowHeight;
+        
+        // 创建底部弹出视图
+        CGFloat sheetView_Height = message_bgViewHeight + tableViewHeight + margin_cancelButton_to_otherButton + cell_rowHeight;
+        self.sheetView = [[UIView alloc] init];
+        
+        if (_otherButtons.count <= otherButton_count) {
+            self.tableView.scrollEnabled = NO;
+            _tableView.bounces = NO;
+        }
+        
+        _cancelButton.frame = CGRectMake(0, sheetView_Height - cell_rowHeight, SG_screenWidth, cell_rowHeight);
+        
+        self.sheetView.frame = CGRectMake(0, SG_screenHeight, SG_screenWidth, sheetView_Height);
+        
+        [self.sheetView addSubview:bgView];
+        [self.sheetView addSubview:_tableView];
+        [self.sheetView addSubview:_cancelButton];
+    }
 }
 
 @end

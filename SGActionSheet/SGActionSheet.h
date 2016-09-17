@@ -20,19 +20,26 @@
 
 @interface SGActionSheet : UIView
 
-/** 提示标题文字 */
-@property (nonatomic, copy) NSString *title;
+/** 提示信息文字颜色设置(系统默认是黑色)*/
+@property (nonatomic, strong) UIColor *messageTextColor;
 
-/** 取消按钮标题 */
-@property (nonatomic, copy) NSString *cancelButtonTitle;
+/** 提示信息文字大小设置(系统默认是17)*/
+@property (nonatomic, strong) UIFont *messageTextFont;
 
-/** 提示标题文字颜色设置 */
-@property (nonatomic, strong) UIColor *titleColor;
-
-/** 其他标题文字颜色设置 */
+/** 其他标题文字颜色设置(系统默认是黑色)*/
 @property (nonatomic, strong) UIColor *otherTitleColor;
 
+/** 其他标题文字大小设置(系统默认是17)*/
+@property (nonatomic, strong) UIFont *otherTitleFont;
+
+/** 取消标题文字颜色设置(系统默认是黑色)*/
+@property (nonatomic, strong) UIColor *cancelButtonTitleColor;
+
+/** 取消标题文字大小设置(系统默认是17)*/
+@property (nonatomic, strong) UIFont *cancelButtonTitleFont;
+
 @property (nonatomic, weak) id<SGActionSheetDelegate> delegate_SG;
+
 
 - (instancetype)initWithTitle:(NSString *)title delegate:(id<SGActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitleArray:(NSArray *)otherButtonTitleArray;
 
