@@ -1,10 +1,10 @@
 ## SGActionSheet
 
-![](https://github.com/kingsic/SGTopTitleView/raw/master/Picture/sorgle.png) 
+![](https://github.com/kingsic/SGActionSheet/raw/master/Picture/sorgle.png) 
 
-![](https://github.com/kingsic/SGTopTitleView/raw/master/Picture/sorgle2.png)
+![](https://github.com/kingsic/SGActionSheet/raw/master/Picture/sorgle2.png)
 
-![](https://github.com/kingsic/SGTopTitleView/raw/master/Picture/sorgle3.png)
+![](https://github.com/kingsic/SGActionSheet/raw/master/Picture/sorgle3.png)
 
 ### * `自定义的UIActionSheet`<br>
 
@@ -16,14 +16,14 @@
   * 导入#import "SGActionSheet.h"头文件
 
   * 对象方法创建
-  ```Objective-C
-  - (instancetype)initWithFrameWithTitle:(NSString *)title delegate:(id<SGActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitleArray:(NSArray *)otherButtonTitleArray 
-  ｀｀｀
+ ```Objective-C
+ - (instancetype)initWithFrameWithTitle:(NSString *)title delegate:(id<SGActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitleArray:(NSArray *)otherButtonTitleArray 
+ ｀｀｀
 
   * 类方法创建
-  ```Objective-C
-  * + (instancetype)actionSheetWithTitle:(NSString *)title delegate:(id<SGActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitleArray:(NSArray *)otherButtonTitleArray
-  ｀｀｀
+ ```Objective-C
+ + (instancetype)actionSheetWithTitle:(NSString *)title delegate:(id<SGActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitleArray:(NSArray *)otherButtonTitleArray
+ ｀｀｀
 
   * sheet.titleColor = [UIColor redColor]; // 设置提示信息文字颜色 （默认为黑色）
  
@@ -31,9 +31,9 @@
  
  
   * 遵循SGActionSheetDelegate协议的delegate_SG方法
-  ```Objective-C
-  - (void)SGActionSheet:(SGActionSheet *)actionSheet didSelectRowAtIndexPath:(NSInteger)indexPath；
-  ```
+ ```Objective-C
+ - (void)SGActionSheet:(SGActionSheet *)actionSheet didSelectRowAtIndexPath:(NSInteger)indexPath；
+ ```
   
 * SGTopTitleView使用方法二：（详细使用方法，请参考Demo）
 
