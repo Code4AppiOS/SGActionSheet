@@ -8,7 +8,6 @@
 
 ### * `自定义的UIActionSheet`<br>
 
-
 * SGActionSheet使用方法一：
 
   * 将项目中SGActionSheet文件夹拖入工程
@@ -16,14 +15,14 @@
   * 导入#import "SGActionSheet.h"头文件
 
   * 对象方法创建
- ```Objective-C
+```Objective-C
  - (instancetype)initWithFrameWithTitle:(NSString *)title delegate:(id<SGActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitleArray:(NSArray *)otherButtonTitleArray 
- ｀｀｀
+```
 
   * 类方法创建
- ```Objective-C
+```Objective-C
  + (instancetype)actionSheetWithTitle:(NSString *)title delegate:(id<SGActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitleArray:(NSArray *)otherButtonTitleArray
- ｀｀｀
+```
 
   * sheet.titleColor = [UIColor redColor]; // 设置提示信息文字颜色 （默认为黑色）
  
@@ -31,9 +30,9 @@
  
  
   * 遵循SGActionSheetDelegate协议的delegate_SG方法
- ```Objective-C
+```Objective-C
  - (void)SGActionSheet:(SGActionSheet *)actionSheet didSelectRowAtIndexPath:(NSInteger)indexPath；
- ```
+```
   
 * SGTopTitleView使用方法二：（详细使用方法，请参考Demo）
 
