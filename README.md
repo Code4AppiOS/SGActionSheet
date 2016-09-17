@@ -34,7 +34,7 @@
  - (void)SGActionSheet:(SGActionSheet *)actionSheet didSelectRowAtIndexPath:(NSInteger)indexPath；
 ```
   
-* SGTopTitleView使用方法二：（详细使用方法，请参考Demo）
+* SGActionSheet使用方法二：（详细使用方法，请参考Demo）
 
 * 提示信息文字，根据内容自动调节
 ```Objective-C
