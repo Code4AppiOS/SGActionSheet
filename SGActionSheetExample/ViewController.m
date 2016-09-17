@@ -23,9 +23,9 @@
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    SGActionSheet *sheet = [[SGActionSheet alloc] initWithTitle:@"这是一个非常实用的ActionSheet" delegate:self cancelButtonTitle:@"取消" otherButtonTitleArray:@[@"相册", @"拍照"]];
+    SGActionSheet *sheet = [[SGActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitleArray:@[@"相册", @"拍照", @"sorgle"]];
     sheet.titleColor = [UIColor redColor];
-    sheet.otherTitleColor = [UIColor brownColor];
+//    sheet.otherTitleColor = [UIColor brownColor];
     [sheet show];
 }
 
