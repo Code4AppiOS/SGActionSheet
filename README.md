@@ -1,10 +1,6 @@
 ## SGActionSheet
 
-![](https://github.com/kingsic/SGActionSheet/raw/master/Picture/sorgle.png) 
-
-![](https://github.com/kingsic/SGActionSheet/raw/master/Picture/sorgle2.png)
-
-![](https://github.com/kingsic/SGActionSheet/raw/master/Picture/sorgle3.png)
+![](https://github.com/kingsic/SGActionSheet/raw/master/Gif/sorgle.gif) 
 
 ### * `自定义的UIActionSheet`<br>
 
@@ -24,11 +20,18 @@
  + (instancetype)actionSheetWithTitle:(NSString *)title delegate:(id<SGActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitleArray:(NSArray *)otherButtonTitleArray
 ```
 
-  * sheet.titleColor = [UIColor redColor]; // 设置提示信息文字颜色 （默认为黑色）
+  * sheet.messageTextColor = [UIColor redColor]; // 设置提示信息文字颜色 （默认为黑色）
  
   * sheet.otherTitleColor = [UIColor brownColor]; // 设置其他按钮文字颜色 （默认为黑色）
- 
- 
+
+  * sheet.cancelButtonTitleColor = [UIColor redColor]; // 设置取消按钮文字颜色 （默认为黑色）
+
+  * sheet.messageTextFont = [UIFont systemFontOfSize:20];  // 设置提示信息文字大小 （默认为17）
+
+  * sheet.otherTitleFont = [UIFont systemFontOfSize:20];  // 设置其他按钮文字大小 （默认为17）
+
+  * sheet.cancelButtonTitleFont = [UIFont systemFontOfSize:20];  // 设置取消按钮文字大小 （默认为17）
+
   * 遵循SGActionSheetDelegate协议的delegate_SG方法
 ```Objective-C
  - (void)SGActionSheet:(SGActionSheet *)actionSheet didSelectRowAtIndexPath:(NSInteger)indexPath；
