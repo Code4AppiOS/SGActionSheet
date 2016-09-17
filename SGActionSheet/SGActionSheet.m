@@ -2,9 +2,12 @@
 //  SGActionSheet.m
 //  SGActionSheetExample
 //
-//  Created by 王腾飞 on 16/9/17.
-//  Copyright © 2016年 Jason. All rights reserved.
+//  Created by Sorgle on 16/9/17.
+//  Copyright © 2016年 Sorgle. All rights reserved.
 //
+
+// 欢迎来Github上下载最新、最完善的Demo
+// Github下载地址 https://github.com/kingsic/SGActionSheet.git
 
 #import "SGActionSheet.h"
 #import "SGActionSheetCell.h"
@@ -23,12 +26,15 @@
 @property (nonatomic, strong) UIView *sheetView;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSArray *otherButtons;
+@property (nonatomic, strong) UILabel *title_label;
 
 @end
 
 @implementation SGActionSheet
 
-static CGFloat const margin = 0;
+static CGFloat const margin = 20;
+static CGFloat const margin_small = 15;
+
 static CGFloat const cell_rowHeight = 44;
 static CGFloat const SheetViewAnimationDuration = 0.25;
 
@@ -83,21 +89,25 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
     [cancelButton setBackgroundImage:[UIImage imageNamed:@"SGActionSheet.bundle/cell_bg_image"] forState:(UIControlStateNormal)];
     [cancelButton setBackgroundImage:[UIImage imageNamed:@"SGActionSheet.bundle/cell_bg_image_high@2x"] forState:(UIControlStateHighlighted)];
     [cancelButton addTarget:self action:@selector(dismiss) forControlEvents:(UIControlEventTouchUpInside)];
-
-
-    // 提示标题文字
-    UILabel *label = [[UILabel alloc] init];
-    label.textAlignment = NSTextAlignmentCenter;
-    label.numberOfLines = 0;
-    label.backgroundColor = [UIColor redColor];
-    label.text = self.title;
+    
+    // 提示标题
+    self.title_label = [[UILabel alloc] init];
+    _title_label.textAlignment = NSTextAlignmentCenter;
+    _title_label.numberOfLines = 0;
+    _title_label.text = self.title;
     
     CGFloat labelW = SG_screenWidth - 2 * margin;
-    CGSize labelSize = [self sizeWithText:label.text font:titleFond maxSize:CGSizeMake(labelW, MAXFLOAT)];
+    CGSize labelSize = [self sizeWithText:_title_label.text font:titleFond maxSize:CGSizeMake(labelW, MAXFLOAT)];
     
-    if (label.text) {
-        label.frame = CGRectMake(margin, 0, SG_screenWidth - 2 * margin, labelSize.height);
-        
+    if (_title_label.text) {
+        // 提示标题文字背景视图
+        UIView *bgView = [[UIView alloc] init];
+        CGFloat bgViewHeight = labelSize.height + margin_small * 2;
+        bgView.frame = CGRectMake(0, 0, SG_screenWidth, bgViewHeight);
+        bgView.backgroundColor = [UIColor whiteColor];
+        [bgView addSubview:_title_label];
+        _title_label.frame = CGRectMake(margin, margin_small, SG_screenWidth - 2 * margin, labelSize.height);
+
         // 创建tableView
         CGFloat tableViewHeight;
         if (_otherButtons.count <= 2) {
@@ -105,20 +115,21 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
         } else {
             tableViewHeight = cell_rowHeight * 2;
         }
-        self.tableView = [[UITableView alloc] initWithFrame:(CGRectMake(0, labelSize.height + 1, SG_screenWidth, tableViewHeight)) style:(UITableViewStylePlain)];
+        self.tableView = [[UITableView alloc] initWithFrame:(CGRectMake(0, bgViewHeight + 1, SG_screenWidth, tableViewHeight)) style:(UITableViewStylePlain)];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.rowHeight = cell_rowHeight;
         
         
         // 创建底部弹出视图
         self.sheetView = [[UIView alloc] init];
         
-        [self.sheetView addSubview:label];
+        [self.sheetView addSubview:bgView];
         [self.sheetView addSubview:_tableView];
         [self.sheetView addSubview:cancelButton];
         
-        CGFloat sheetViewHeight = labelSize.height + tableViewHeight + 5 + cell_rowHeight;
+        CGFloat sheetViewHeight = bgViewHeight + tableViewHeight + 5 + cell_rowHeight;
         if (_otherButtons.count <= 2) {
             self.tableView.scrollEnabled = NO;
             _tableView.bounces = NO;
@@ -165,7 +176,6 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
 
 - (void)show {
     if (self.superview != nil) return;
-
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     [keyWindow addSubview:self];
     
@@ -181,7 +191,6 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
         self.sheetView.transform = CGAffineTransformIdentity;
     } completion:^(BOOL finished) {
         [self removeFromSuperview];
-
     }];
 }
 
@@ -192,15 +201,15 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     static NSString *cellID = @"cell";
     SGActionSheetCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
         cell = [[SGActionSheetCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
     
-    
     cell.titleLabel.text = self.otherButtons[indexPath.row];
-    
+    cell.titleLabel.textColor = _otherTitleColor;
     cell.splitters.hidden = indexPath.row == 0;
     
     cell.tag = indexPath.row + cell_Tag;
@@ -216,5 +225,17 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
 }
 
 
+
+#pragma mark - - - setter
+
+- (void)setTitleColor:(UIColor *)titleColor {
+    _titleColor = titleColor;
+    
+    self.title_label.textColor = titleColor;
+}
+
+- (void)setOtherTitleColor:(UIColor *)otherTitleColor {
+    _otherTitleColor = otherTitleColor;
+}
 
 @end

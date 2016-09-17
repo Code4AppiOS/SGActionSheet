@@ -2,9 +2,12 @@
 //  SGActionSheet.h
 //  SGActionSheetExample
 //
-//  Created by 王腾飞 on 16/9/17.
-//  Copyright © 2016年 Jason. All rights reserved.
+//  Created by Sorgle on 16/9/17.
+//  Copyright © 2016年 Sorgle. All rights reserved.
 //
+
+// 欢迎来Github上下载最新、最完善的Demo
+// Github下载地址 https://github.com/kingsic/SGActionSheet.git
 
 #import <UIKit/UIKit.h>
 @class SGActionSheet;
@@ -22,6 +25,12 @@
 
 /** 取消按钮标题 */
 @property (nonatomic, copy) NSString *cancelButtonTitle;
+
+/** 提示标题文字颜色设置 */
+@property (nonatomic, strong) UIColor *titleColor;
+
+/** 其他标题文字颜色设置 */
+@property (nonatomic, strong) UIColor *otherTitleColor;
 
 @property (nonatomic, weak) id<SGActionSheetDelegate> delegate_SG;
 

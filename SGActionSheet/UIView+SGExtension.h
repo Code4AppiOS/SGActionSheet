@@ -7,7 +7,7 @@
 //
 
 // 欢迎来Github上下载最完整的Demo
-// Github下载地址 https://github.com/Hanymore/SGTopScrollMenu.git
+// Github下载地址 https://github.com/kingsic/SGTopTitleView.git
 
 
 #import <UIKit/UIKit.h>
