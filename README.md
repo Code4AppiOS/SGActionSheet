@@ -4,7 +4,7 @@
 
 ### * `自定义的UIActionSheet`<br>
 
-* SGActionSheet使用方法一：
+* SGActionSheet使用(一句代码创建, 一句代码调用)：
 
   * 将项目中SGActionSheet文件夹拖入工程
 
@@ -38,8 +38,6 @@
 ```Objective-C
  - (void)SGActionSheet:(SGActionSheet *)actionSheet didSelectRowAtIndexPath:(NSInteger)indexPath；
 ```
-  
-* SGActionSheet使用方法二：（详细使用方法，请参考Demo）
 
 * 提示信息文字，根据内容自动调节
 ```Objective-C

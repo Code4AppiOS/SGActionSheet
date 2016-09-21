@@ -6,8 +6,14 @@
 //  Copyright © 2016年 Sorgle. All rights reserved.
 //
 
-// 欢迎来Github上下载最新、最完善的Demo
-// Github下载地址 https://github.com/kingsic/SGActionSheet.git
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+//
+//  - - 欢迎前来GitHub下载最新、最完善的Demo - - - - - - - - - - - - - - - - - - //
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  - - GitHub下载地址 https://github.com/kingsic/SGActionSheet.git - - - - - //
+//
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
 #import "SGActionSheetCell.h"
 
@@ -45,6 +51,7 @@
 }
 
 - (void)layoutSubviews {
+    
     [super layoutSubviews];
     
     self.cellBGimageHigh.frame = self.bounds;

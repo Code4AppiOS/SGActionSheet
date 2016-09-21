@@ -6,9 +6,14 @@
 //  Copyright © 2015年 Sorgle. All rights reserved.
 //
 
-// 欢迎来Github上下载最完整的Demo
-// Github下载地址 https://github.com/kingsic/SGTopTitleView.git
-
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+//
+//  - - 欢迎前来GitHub下载最新、最完善的Demo - - - - - - - - - - - - - - - - - - //
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  - - GitHub下载地址 https://github.com/kingsic/SGTopTitleView.git  - - - - //
+//
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
 #import "UIView+SGExtension.h"
 

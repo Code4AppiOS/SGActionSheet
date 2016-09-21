@@ -6,37 +6,43 @@
 //  Copyright © 2016年 Sorgle. All rights reserved.
 //
 
-// 欢迎来Github上下载最新、最完善的Demo
-// Github下载地址 https://github.com/kingsic/SGActionSheet.git
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+//
+//  - - 欢迎前来GitHub下载最新、最完善的Demo - - - - - - - - - - - - - - - - - - //
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  - - GitHub下载地址 https://github.com/kingsic/SGActionSheet.git - - - - - //
+//
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
 #import "SGActionSheet.h"
 #import "SGActionSheetCell.h"
 #import "UIView+SGExtension.h"
 
-
 #define message_TextFond [UIFont systemFontOfSize:17]
-
 #define SG_screenWidth [UIScreen mainScreen].bounds.size.width
 #define SG_screenHeight [UIScreen mainScreen].bounds.size.height
 
 @interface SGActionSheet () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UIButton *coverView;
+
 /** 信息提示文字 */
 @property (nonatomic, copy) NSString *title;
-/** 取消按钮文字 */
-@property (nonatomic, copy) NSString *cancelButtonTitle;
 /** 其他标题文字数组 */
 @property (nonatomic, strong) NSArray *otherButtons;
+/** 取消按钮文字 */
+@property (nonatomic, copy) NSString *cancelButtonTitle;
 
-/** 底部弹出视图 */
-@property (nonatomic, strong) UIView *sheetView;
-@property (nonatomic, strong) UITableView *tableView;
-
-/** 提示Label */
+/** 信息提示Label */
 @property (nonatomic, strong) UILabel *message_label;
+/** 其他按钮 */
+@property (nonatomic, strong) UITableView *tableView;
 /** 取消按钮 */
 @property (nonatomic, strong) UIButton *cancelButton;
+/** 底部弹出视图 */
+@property (nonatomic, strong) UIView *sheetView;
+
 @end
 
 @implementation SGActionSheet
@@ -60,8 +66,8 @@ static CGFloat const cell_rowHeight = 44;
 static CGFloat const SheetViewAnimationDuration = 0.25;
 
 - (instancetype)initWithTitle:(NSString *)title delegate:(id<SGActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitleArray:(NSArray *)otherButtonTitleArray {
+    
     if (self = [super init]) {
-        
         self.frame = [UIScreen mainScreen].bounds;
         self.backgroundColor = [UIColor clearColor];
         
@@ -242,9 +248,7 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
     cell.titleLabel.textColor = self.otherTitleColor;
     cell.titleLabel.font = self.otherTitleFont;
     cell.splitters.hidden = indexPath.row == 0;
-    
-    cell.tag = indexPath.row + cell_Tag;
-    
+        
     return cell;
 }
 
@@ -257,7 +261,6 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
 
 
 #pragma mark - - - setter
-
 - (void)setMessageTextColor:(UIColor *)messageTextColor {
     _messageTextColor = messageTextColor;
     self.message_label.textColor = messageTextColor;
@@ -269,7 +272,6 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
     [self.sheetView removeFromSuperview];
     /** 抽出的部分代码 */
     [self SG_messageTextFont:messageTextFont];
-    [self.coverView addSubview:_sheetView];
 }
 
 - (void)setCancelButtonTitleColor:(UIColor *)cancelButtonTitleColor {
@@ -295,7 +297,6 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
     CGSize message_labelSize = [self sizeWithText:_message_label.text font:messageTextFont maxSize:CGSizeMake(message_label_W, MAXFLOAT)];
     
     if (_message_label.text) {
-        
         // 设置Message的frame
         _message_label.frame = CGRectMake(margin_X, margin_Y, SG_screenWidth - 2 * margin_X, message_labelSize.height);
         
@@ -345,6 +346,7 @@ static CGFloat const SheetViewAnimationDuration = 0.25;
         [self.sheetView addSubview:_tableView];
         [self.sheetView addSubview:_cancelButton];
     }
+    [self.coverView addSubview:_sheetView];
 }
 
 @end
