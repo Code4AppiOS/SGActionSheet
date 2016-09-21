@@ -39,6 +39,8 @@
  - (void)SGActionSheet:(SGActionSheet *)actionSheet didSelectRowAtIndexPath:(NSInteger)indexPath；
 ```
 
+* 对象调用show方法, 展示SGActionSheet
+
 * 提示信息文字，根据内容自动调节
 ```Objective-C
 - (CGRect)boundingRectWithSize:(CGSize)size options:(NSStringDrawingOptions)options attributes:(nullable NSDictionary *)attributes context:(nullable NSStringDrawingContext *)context;
