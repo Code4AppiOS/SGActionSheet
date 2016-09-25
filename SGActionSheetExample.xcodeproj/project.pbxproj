@@ -17,6 +17,9 @@
 		965B6AD71D8C95FB0009DFC7 /* UIView+SGExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 965B6AD61D8C95FB0009DFC7 /* UIView+SGExtension.m */; };
 		965B6AE51D8C9F9E0009DFC7 /* SGActionSheet.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 965B6AE41D8C9F9E0009DFC7 /* SGActionSheet.bundle */; };
 		965B6AE81D8CA3200009DFC7 /* SGActionSheetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 965B6AE71D8CA3200009DFC7 /* SGActionSheetCell.m */; };
+		96977AC91D98463200E96216 /* SGAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96977AC51D98463200E96216 /* SGAlertView.m */; };
+		96977ACA1D98463200E96216 /* SGBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96977AC71D98463200E96216 /* SGBottomView.m */; };
+		96977ACB1D98463200E96216 /* SGBottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96977AC81D98463200E96216 /* SGBottomView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +40,11 @@
 		965B6AE41D8C9F9E0009DFC7 /* SGActionSheet.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SGActionSheet.bundle; sourceTree = "<group>"; };
 		965B6AE61D8CA3200009DFC7 /* SGActionSheetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGActionSheetCell.h; sourceTree = "<group>"; };
 		965B6AE71D8CA3200009DFC7 /* SGActionSheetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGActionSheetCell.m; sourceTree = "<group>"; };
+		96977AC41D98463200E96216 /* SGAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGAlertView.h; sourceTree = "<group>"; };
+		96977AC51D98463200E96216 /* SGAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGAlertView.m; sourceTree = "<group>"; };
+		96977AC61D98463200E96216 /* SGBottomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBottomView.h; sourceTree = "<group>"; };
+		96977AC71D98463200E96216 /* SGBottomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBottomView.m; sourceTree = "<group>"; };
+		96977AC81D98463200E96216 /* SGBottomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SGBottomView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +107,11 @@
 				965B6AD31D8C85B40009DFC7 /* SGActionSheet.m */,
 				965B6AE61D8CA3200009DFC7 /* SGActionSheetCell.h */,
 				965B6AE71D8CA3200009DFC7 /* SGActionSheetCell.m */,
+				96977AC41D98463200E96216 /* SGAlertView.h */,
+				96977AC51D98463200E96216 /* SGAlertView.m */,
+				96977AC61D98463200E96216 /* SGBottomView.h */,
+				96977AC71D98463200E96216 /* SGBottomView.m */,
+				96977AC81D98463200E96216 /* SGBottomView.xib */,
 				965B6AD51D8C95FB0009DFC7 /* UIView+SGExtension.h */,
 				965B6AD61D8C95FB0009DFC7 /* UIView+SGExtension.m */,
 			);
@@ -167,6 +180,7 @@
 				965B6AC71D8C85430009DFC7 /* Assets.xcassets in Resources */,
 				965B6AE51D8C9F9E0009DFC7 /* SGActionSheet.bundle in Resources */,
 				965B6AC51D8C85430009DFC7 /* Main.storyboard in Resources */,
+				96977ACB1D98463200E96216 /* SGBottomView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,7 +194,9 @@
 				965B6AC21D8C85430009DFC7 /* ViewController.m in Sources */,
 				965B6ABF1D8C85430009DFC7 /* AppDelegate.m in Sources */,
 				965B6ABC1D8C85430009DFC7 /* main.m in Sources */,
+				96977ACA1D98463200E96216 /* SGBottomView.m in Sources */,
 				965B6AE81D8CA3200009DFC7 /* SGActionSheetCell.m in Sources */,
+				96977AC91D98463200E96216 /* SGAlertView.m in Sources */,
 				965B6AD41D8C85B40009DFC7 /* SGActionSheet.m in Sources */,
 				965B6AD71D8C95FB0009DFC7 /* UIView+SGExtension.m in Sources */,
 			);
