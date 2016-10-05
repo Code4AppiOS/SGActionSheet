@@ -1,6 +1,28 @@
-## SGActionSheet
+
+## 前沿
+
+* 项目中有时需要自定义 UIActionSheet 与 UIAlertView 来满足 app 界面的美观
+
+* 这里的 SGActionSheet 采取的是微信、微博界面的布局样式,  SGAlertView 采取的是美团外卖的布局样式
+
+* 轻轻的我走了，正如我轻轻的来，我动一动鼠标，就是为了给你 Star (喜欢的朋友别忘了哦 😊 😊）
+
+* 代码后期不断更新维护中
+
+
+## 主要内容的介绍
+
+* `自定义 UIActionSheet (仿微信、微博)`<br>
+
+* `自定义 UIAlertView (仿美团外卖)`<br>
+
+
+## 效果图
 
 ![](https://github.com/kingsic/SGActionSheet/raw/master/Gif/sorgle.gif) 
+
+
+## 代码介绍
 
 ### * `自定义的UIActionSheet`<br>
 
@@ -71,3 +93,13 @@
 ```Objective-C
 - (CGRect)boundingRectWithSize:(CGSize)size options:(NSStringDrawingOptions)options attributes:(nullable NSDictionary *)attributes context:(nullable NSStringDrawingContext *)context;
 ```
+
+
+## 版本介绍
+
+* 2016. 10. 6 --> 新增AlertView底部View的样式
+
+
+## Concluding remarks
+
+* 如在使用中, 遇到什么问题或有更好建议者, 请记得 Issues me 或 kingsic@126.com 邮箱联系我
