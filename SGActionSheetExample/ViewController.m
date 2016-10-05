@@ -8,8 +8,9 @@
 
 #import "ViewController.h"
 #import "SGActionSheet.h"
+#import "SGAlertView.h"
 
-@interface ViewController () <SGActionSheetDelegate>
+@interface ViewController () <SGActionSheetDelegate, SGAlertViewDelegate>
 
 @end
 
@@ -49,6 +50,22 @@
 
 - (void)SGActionSheet:(SGActionSheet *)actionSheet didSelectRowAtIndexPath:(NSInteger)indexPath {
     NSLog(@"%ld", indexPath);
+}
+
+#pragma mark - - - AlertView
+- (IBAction)default_alertView:(id)sender {
+    
+    SGAlertView *alert = [[SGAlertView alloc] initWithTitle:@"温馨提示 ! !" delegate:nil contentTitle:@"代码不断更新、优化中, 请移步GitHub下载最新Demo" alertViewBottomViewType:(SGAlertViewBottomViewTypeOne)];
+    [alert show];
+}
+
+- (IBAction)default_alertView_two:(id)sender {
+    SGAlertView *alert = [[SGAlertView alloc] initWithTitle:@"确定退出 ?" delegate:self contentTitle:@"退出登录后将无法查看订单, 重新登录后即可查看" alertViewBottomViewType:(SGAlertViewBottomViewTypeTwo)];
+    [alert show];
+}
+
+- (void)didSelectedSureButtonClick {
+    NSLog(@"nin dian ji de shi que ding an niu");
 }
 
 @end

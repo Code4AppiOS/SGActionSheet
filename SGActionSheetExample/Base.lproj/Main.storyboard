@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Vnj-jy-TN3">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Vnj-jy-TN3">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -20,6 +20,22 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg_image" translatesAutoresizingMaskIntoConstraints="NO" id="NsE-Yq-MLT">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GCj-zN-GtV">
+                                <rect key="frame" x="200" y="344" width="200" height="30"/>
+                                <color key="backgroundColor" red="0.92549019610000005" green="0.41176470590000003" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="80n-hx-hUB"/>
+                                    <constraint firstAttribute="width" constant="200" id="Vn8-cy-ZC2"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="Yxa-nF-bxT"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="ymi-F3-RWH"/>
+                                </constraints>
+                                <state key="normal" title="Default - AlertView">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="default_alertView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YJ2-BO-tJI"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zgz-BA-lWy">
                                 <rect key="frame" x="200" y="224" width="200" height="30"/>
                                 <color key="backgroundColor" red="0.92549019610000005" green="0.41176470590000003" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -82,6 +98,22 @@
                                     <action selector="default_Message_Scroll:" destination="BYZ-38-t0r" eventType="touchUpInside" id="iPv-6D-ie5"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cmi-Zp-cG6">
+                                <rect key="frame" x="200" y="404" width="200" height="30"/>
+                                <color key="backgroundColor" red="0.92549019610000005" green="0.41176470590000003" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="12x-DQ-fvf"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="9Hn-MG-7gc"/>
+                                    <constraint firstAttribute="width" constant="200" id="kQM-UZ-y6g"/>
+                                    <constraint firstAttribute="height" constant="30" id="vsX-y9-qwe"/>
+                                </constraints>
+                                <state key="normal" title="Default - AlertView - Two">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="default_alertView_two:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zqB-hS-4zz"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -91,11 +123,15 @@
                             <constraint firstItem="RB7-RX-5Wg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Jcu-o5-E3O"/>
                             <constraint firstItem="zgz-BA-lWy" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="LYD-JA-4g6"/>
                             <constraint firstItem="NsE-Yq-MLT" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Mkd-Kj-P9a"/>
+                            <constraint firstItem="Cmi-Zp-cG6" firstAttribute="top" secondItem="GCj-zN-GtV" secondAttribute="bottom" constant="30" id="Nm5-8k-bIt"/>
                             <constraint firstItem="zgz-BA-lWy" firstAttribute="top" secondItem="sou-e2-cdk" secondAttribute="bottom" constant="30" id="Wm4-2H-bek"/>
                             <constraint firstItem="NsE-Yq-MLT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="eFU-Nk-MCd"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="NsE-Yq-MLT" secondAttribute="bottom" id="mM4-ec-NqU"/>
                             <constraint firstItem="bOp-mM-qon" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="nuJ-eg-RJ2"/>
                             <constraint firstAttribute="trailing" secondItem="NsE-Yq-MLT" secondAttribute="trailing" id="q5e-cP-0Sh"/>
+                            <constraint firstItem="GCj-zN-GtV" firstAttribute="top" secondItem="RB7-RX-5Wg" secondAttribute="bottom" constant="30" id="qiv-dN-pho"/>
+                            <constraint firstItem="Cmi-Zp-cG6" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="qoF-qI-EjU"/>
+                            <constraint firstItem="GCj-zN-GtV" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="u6x-xq-veF"/>
                             <constraint firstItem="bOp-mM-qon" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="40" id="wcC-fl-9YX"/>
                         </constraints>
                     </view>
@@ -103,7 +139,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1065" y="339"/>
+            <point key="canvasLocation" x="905" y="329"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zde-cR-1LJ">

@@ -15,13 +15,12 @@
 //  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
 #import "SGAlertView.h"
-#import "SGBottomView.h"
 
 #define SG_screenWidth [UIScreen mainScreen].bounds.size.width
 #define SG_screenHeight [UIScreen mainScreen].bounds.size.height
 #define SG_alertView_width 280
 #define SG_margin_X (SG_screenWidth - SG_alertView_width) * 0.5
-
+#define SG_lineColor [UIColor colorWithRed:200 / 255.0 green:200 / 255.0 blue:200 / 255.0 alpha:1.0]
 @interface SGAlertView ()
 /** 遮盖 */
 @property (nonatomic, strong) UIButton *coverView;
@@ -32,6 +31,11 @@
 @property (nonatomic, copy) NSString *messageTitle;
 /** 内容提示文字 */
 @property (nonatomic, copy) NSString *contentTitle;
+
+/** SGAlertViewBottomViewTypeOne */
+@property (nonatomic, strong) UIView *bottomViewOne;
+/** SGAlertViewBottomViewTypeTwo */
+@property (nonatomic, strong) UIView *bottomViewTwo;
 
 @end
 
@@ -48,7 +52,7 @@ static CGFloat const message_text_fond = 17;
 /** 内容字体大小 */
 static CGFloat const content_text_fond = 14;
 
-- (instancetype)initWithTitle:(NSString *)title delegate:(id<SGAlertViewDelegate>)delegate contentTitle:(NSString *)contentTitle {
+- (instancetype)initWithTitle:(NSString *)title delegate:(id<SGAlertViewDelegate>)delegate contentTitle:(NSString *)contentTitle alertViewBottomViewType:(SGAlertViewBottomViewType)alertViewBottomViewType {
     if (self = [super init]) {
         self.frame = [UIScreen mainScreen].bounds;
         self.backgroundColor = [UIColor clearColor];
@@ -56,14 +60,14 @@ static CGFloat const content_text_fond = 14;
         self.messageTitle = title;
         self.delegate_SG = delegate;
         self.contentTitle = contentTitle;
-        
+        self.alertViewBottomViewType = alertViewBottomViewType;
         [self setupAlertView];
     }
     return self;
 }
 
-+ (instancetype)alertViewWithTitle:(NSString *)title delegate:(id<SGAlertViewDelegate>)delegate contentTitle:(NSString *)contentTitle {
-    return [[self alloc] initWithTitle:title delegate:delegate contentTitle:contentTitle];
++ (instancetype)alertViewWithTitle:(NSString *)title delegate:(id<SGAlertViewDelegate>)delegate contentTitle:(NSString *)contentTitle alertViewBottomViewType:(SGAlertViewBottomViewType)alertViewBottomViewType{
+    return [[self alloc] initWithTitle:title delegate:delegate contentTitle:contentTitle alertViewBottomViewType:alertViewBottomViewType];
 }
 
 - (void)show {
@@ -113,7 +117,7 @@ static CGFloat const content_text_fond = 14;
     self.coverView = [[UIButton alloc] init];
     self.coverView.frame = self.bounds;
     self.coverView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
-    [self.coverView addTarget:self action:@selector(dismiss) forControlEvents:(UIControlEventTouchUpInside)];
+//    [self.coverView addTarget:self action:@selector(dismiss) forControlEvents:(UIControlEventTouchUpInside)];
     [self addSubview:self.coverView];
     
     // 提示标题
@@ -121,7 +125,6 @@ static CGFloat const content_text_fond = 14;
     message_label.textAlignment = NSTextAlignmentCenter;
     message_label.numberOfLines = 0;
     message_label.text = self.messageTitle;
-    message_label.backgroundColor = [UIColor yellowColor];
     message_label.font = [UIFont boldSystemFontOfSize:17];
     CGSize message_labelSize = [self sizeWithText:message_label.text font:[UIFont systemFontOfSize:message_text_fond] maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT)];
     // 设置Message的frame
@@ -141,7 +144,6 @@ static CGFloat const content_text_fond = 14;
     content_label.textAlignment = NSTextAlignmentCenter;
     content_label.numberOfLines = 0;
     content_label.text = self.contentTitle;
-    content_label.backgroundColor = [UIColor redColor];
     content_label.font = [UIFont systemFontOfSize:content_text_fond];
     content_label.textColor = [UIColor colorWithWhite:0.3 alpha:1.0];
     CGSize content_labelSize = [self sizeWithText:content_label.text font:[UIFont systemFontOfSize:content_text_fond] maxSize:CGSizeMake(SG_alertView_width - 2 * margin_X, MAXFLOAT)];
@@ -169,30 +171,98 @@ static CGFloat const content_text_fond = 14;
     [topView addSubview:message_label];
     [topView addSubview:content_label];
 
-    // 创建底部View
-    SGBottomView *bottomView = [[[NSBundle mainBundle] loadNibNamed:@"SGBottomView" owner:nil options:nil] firstObject];
-    CGFloat bottomView_X = 0;
-    CGFloat bottomView_Y = CGRectGetMaxY(topView.frame);
-    CGFloat bottomView_W = SG_alertView_width;
-    CGFloat bottomView_H = 45;
-    bottomView.frame = CGRectMake(bottomView_X, bottomView_Y, bottomView_W, bottomView_H);
-    [bottomView addTargetCancelBtn:self action:@selector(dismiss)];
-    [bottomView addTargetSureBtn:self action:@selector(sureButtonClick)];
-    
-    // 背景View
-    self.bg_view = [[UIView alloc] init];
-    CGFloat bg_viewW = SG_alertView_width;
-    CGFloat bg_viewH = topView.frame.size.height + 45;
-    CGFloat bg_viewX = SG_margin_X;
-    CGFloat bg_viewY = (SG_screenHeight - bg_viewH) * 0.5;
-    _bg_view.frame = CGRectMake(bg_viewX, bg_viewY, bg_viewW, bg_viewH);
-    _bg_view.layer.cornerRadius = 7;
-    _bg_view.layer.masksToBounds = YES;
-    _bg_view.backgroundColor = [UIColor whiteColor];
-    
-    [_bg_view addSubview:topView];
-    [_bg_view addSubview:bottomView];
-    [self.coverView addSubview:_bg_view];
+    if (self.alertViewBottomViewType == SGAlertViewBottomViewTypeOne) {
+        // 创建底部View
+        self.bottomViewOne = [[UIView alloc] init];
+        CGFloat bottomView_X = 0;
+        CGFloat bottomView_Y = CGRectGetMaxY(topView.frame);
+        CGFloat bottomView_W = SG_alertView_width;
+        CGFloat bottomView_H = 45;
+        _bottomViewOne.frame = CGRectMake(bottomView_X, bottomView_Y, bottomView_W, bottomView_H);
+        _bottomViewOne.backgroundColor = SG_lineColor;
+        
+        // 给 bottomViewOne 添加子视图
+        UIButton *button = [[UIButton alloc] init];
+        CGFloat button_X = 0;
+        CGFloat button_Y = 1;
+        CGFloat button_W = bottomView_W;
+        CGFloat button_H = bottomView_H - button_Y;
+        button.frame = CGRectMake(button_X, button_Y, button_W, button_H);
+        button.backgroundColor = [UIColor whiteColor];
+        [button setTitle:@"确定" forState:(UIControlStateNormal)];
+        [button setTitleColor:[UIColor blackColor] forState:(UIControlStateNormal)];
+        button.titleLabel.font = [UIFont systemFontOfSize:16];
+        [button addTarget:self action:@selector(dismiss) forControlEvents:(UIControlEventTouchUpInside)];
+        [self.bottomViewOne addSubview:button];
+
+        // 背景View
+        self.bg_view = [[UIView alloc] init];
+        CGFloat bg_viewW = SG_alertView_width;
+        CGFloat bg_viewH = topView.frame.size.height + 45;
+        CGFloat bg_viewX = SG_margin_X;
+        CGFloat bg_viewY = (SG_screenHeight - bg_viewH) * 0.5;
+        _bg_view.frame = CGRectMake(bg_viewX, bg_viewY, bg_viewW, bg_viewH);
+        _bg_view.layer.cornerRadius = 7;
+        _bg_view.layer.masksToBounds = YES;
+        _bg_view.backgroundColor = [UIColor whiteColor];
+        
+        [_bg_view addSubview:topView];
+        [_bg_view addSubview:_bottomViewOne];
+        [self.coverView addSubview:_bg_view];
+
+    } else {
+        
+        // 创建底部View
+        self.bottomViewTwo = [[UIView alloc] init];
+        CGFloat bottomView_X = 0;
+        CGFloat bottomView_Y = CGRectGetMaxY(topView.frame);
+        CGFloat bottomView_W = SG_alertView_width;
+        CGFloat bottomView_H = 45;
+        _bottomViewTwo.frame = CGRectMake(bottomView_X, bottomView_Y, bottomView_W, bottomView_H);
+        _bottomViewTwo.backgroundColor = SG_lineColor;
+        
+        // 给 bottomViewOne 添加子视图
+        UIButton *left_button = [[UIButton alloc] init];
+        CGFloat left_button_X = 0;
+        CGFloat left_button_Y = 1;
+        CGFloat left_button_W = bottomView_W * 0.5;
+        CGFloat left_button_H = bottomView_H - left_button_Y;
+        left_button.frame = CGRectMake(left_button_X, left_button_Y, left_button_W, left_button_H);
+        left_button.backgroundColor = [UIColor whiteColor];
+        [left_button setTitle:@"取消" forState:(UIControlStateNormal)];
+        [left_button setTitleColor:[UIColor blackColor] forState:(UIControlStateNormal)];
+        left_button.titleLabel.font = [UIFont systemFontOfSize:16];
+        [left_button addTarget:self action:@selector(dismiss) forControlEvents:(UIControlEventTouchUpInside)];
+        [self.bottomViewTwo addSubview:left_button];
+        
+        UIButton *right_button = [[UIButton alloc] init];
+        CGFloat right_button_X = CGRectGetMaxX(left_button.frame) + 1;
+        CGFloat right_button_Y = 1;
+        CGFloat right_button_W = bottomView_W - right_button_X;
+        CGFloat right_button_H = bottomView_H - left_button_Y;
+        right_button.frame = CGRectMake(right_button_X, right_button_Y, right_button_W, right_button_H);
+        right_button.backgroundColor = [UIColor whiteColor];
+        [right_button setTitle:@"确定" forState:(UIControlStateNormal)];
+        [right_button setTitleColor:[UIColor blackColor] forState:(UIControlStateNormal)];
+        right_button.titleLabel.font = [UIFont systemFontOfSize:16];
+        [right_button addTarget:self action:@selector(sureButtonClick) forControlEvents:(UIControlEventTouchUpInside)];
+        [self.bottomViewTwo addSubview:right_button];
+        
+        // 背景View
+        self.bg_view = [[UIView alloc] init];
+        CGFloat bg_viewW = SG_alertView_width;
+        CGFloat bg_viewH = topView.frame.size.height + 45;
+        CGFloat bg_viewX = SG_margin_X;
+        CGFloat bg_viewY = (SG_screenHeight - bg_viewH) * 0.5;
+        _bg_view.frame = CGRectMake(bg_viewX, bg_viewY, bg_viewW, bg_viewH);
+        _bg_view.layer.cornerRadius = 7;
+        _bg_view.layer.masksToBounds = YES;
+        _bg_view.backgroundColor = [UIColor whiteColor];
+        
+        [_bg_view addSubview:topView];
+        [_bg_view addSubview:_bottomViewTwo];
+        [self.coverView addSubview:_bg_view];
+    }
 }
 
 -(void)animationWithAlertView {
@@ -202,7 +272,7 @@ static CGFloat const content_text_fond = 14;
     animation.removedOnCompletion = YES;
     animation.fillMode = kCAFillModeForwards;
     NSMutableArray *values = [NSMutableArray array];
-//    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.0, 1.0, 1.0)]];
+    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.0, 1.0, 1.0)]];
     [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.1, 1.1, 1.0)]];
     [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.0, 1.0, 1.0)]];
     animation.values = values;
