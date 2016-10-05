@@ -20,6 +20,8 @@
  + (instancetype)actionSheetWithTitle:(NSString *)title delegate:(id<SGActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitleArray:(NSArray *)otherButtonTitleArray
 ```
 
+* 对象调用show方法, 展示SGActionSheet
+
   * 属性设置
 
    * sheet.messageTextColor = [UIColor redColor]; // 设置提示信息文字颜色 （默认为黑色）
@@ -39,7 +41,31 @@
  - (void)SGActionSheet:(SGActionSheet *)actionSheet didSelectRowAtIndexPath:(NSInteger)indexPath；
 ```
 
-* 对象调用show方法, 展示SGActionSheet
+### * `自定义的UIAlertView`<br>
+
+* SGAlertView使用(一句代码创建, 一句代码调用)：
+
+  * 将项目中SGActionSheet文件夹拖入工程
+
+  * 导入#import "SGAlertView.h"头文件
+
+  * 对象方法创建
+```Objective-C
+- (instancetype)initWithTitle:(NSString *)title delegate:(id<SGAlertViewDelegate>)delegate contentTitle:(NSString *)contentTitle alertViewBottomViewType:(SGAlertViewBottomViewType)alertViewBottomViewType;
+```
+
+  * 类方法创建
+```Objective-C
++ (instancetype)alertViewWithTitle:(NSString *)title delegate:(id<SGAlertViewDelegate>)delegate contentTitle:(NSString *)contentTitle alertViewBottomViewType:(SGAlertViewBottomViewType)alertViewBottomViewType;
+```
+
+* 对象调用show方法, 展示SGAlertView
+
+ * 遵循SGAlertViewDelegate协议的delegate_SG方法
+
+```Objective-C
+- (void)didSelectedSureButtonClick;
+```
 
 * 提示信息文字，根据内容自动调节
 ```Objective-C
